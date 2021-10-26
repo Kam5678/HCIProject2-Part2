@@ -10,6 +10,7 @@ using SkiaSharp.Views.Forms;
 using SkiaSharp;
 using System.Threading;
 using System.Diagnostics;
+using System.Numerics;
 using System.Reflection;
 using System.IO;
 
@@ -27,6 +28,9 @@ namespace HCIProject2_Part2
         System.Diagnostics.Stopwatch stopwatch = new Stopwatch();
         bool pageIsActive;
         float angle = -90;
+        float previousangle = 0;
+        Vector3 acceleration;
+
         private SKBitmap resourceBitmap;
         
 
@@ -43,8 +47,17 @@ namespace HCIProject2_Part2
                 return;
 
             // Register and Staart Accelermeter
+            //Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
+            Accelerometer.ReadingChanged += (sender, args) =>
+            {
+                // Smooth the reading by averaging with prior values
+                acceleration = 0.5f * args.Reading.Acceleration + 0.5f * acceleration;
+ 
+            };
             Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
+            angle = (float)(0 - (90 * acceleration.X));
             Accelerometer.Start(SensorSpeed.Fastest);
+           
 
             
 
@@ -66,6 +79,7 @@ namespace HCIProject2_Part2
                 //double t = data.Acceleration.X;
                 //angle = (float)(-90+(180 * t));
                 //Console.WriteLine(angle);
+               
                 //Console.WriteLine(angle);
                 canvasView.InvalidateSurface();
 
@@ -127,6 +141,8 @@ namespace HCIProject2_Part2
 
                 float x = radius * (float)Math.Sin(Math.PI * angle / 180);
                 float y = -radius * (float)Math.Cos(Math.PI * angle / 180);
+                canvas.DrawCircle(x, y, 100, paint);
+                canvas.DrawPath(MainPage.HendecagramPath, paint);
                 //canvas.Translate(x, y);
                 if (resourceBitmap != null) {
                     canvas.DrawCircle(x, y, 100, paint);
@@ -158,6 +174,16 @@ namespace HCIProject2_Part2
         async void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
         {
             var data = e.Reading;
+            acceleration = (0.5f * e.Reading.Acceleration) + 0.95f * acceleration;
+           
+            float angleChoice = (float)(Math.Truncate(acceleration.X*100)/100);
+            Console.WriteLine(angleChoice);
+
+            if (previousangle - angleChoice > 0.05 ^ previousangle - angleChoice < -0.05)
+            {
+                angle = (float)(0 - (90 * angleChoice));
+                previousangle = angleChoice;
+            }
             angle = (float)(0 - (90 * data.Acceleration.X));
             Console.WriteLine(data.Acceleration.X);
             
@@ -165,6 +191,42 @@ namespace HCIProject2_Part2
             //await ballEllipse.TranslateTo(e.Reading.Acceleration.X * -200, e.Reading.Acceleration.Y * 200, 200);
         }
 
+       
+
+    /**
+    void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
+    {
+        //Initialize the Canvas  
+        SKSurface vSurface = args.Surface;
+        SKCanvas vCanvas = vSurface.Canvas;
+        int surfaceWidth = args.Info.Width;
+        int surfaceHeight = args.Info.Height;
+        float radius = (Math.Min(surfaceHeight, surfaceWidth) * 0.5f) - 25;
+        //Clear the Canvas  
+        vCanvas.Clear();
+        //Creating the Paint object to color the Items  
+        SKPaint vBlackPaint = new SKPaint
+        {
+            Color = SKColors.Black,
+            StrokeWidth = 5,
+            StrokeCap = SKStrokeCap.Round,
+            TextSize = 60
+        };
+        SKPaint vWhitePaint = new SKPaint
+        {
+            Color = SKColors.White
+        };
+        var outerPaint = new SKPaint
+        {
+            Style = SKPaintStyle.Stroke, //stroke so that it traces the outline
+            Color = Color.DarkBlue.ToSKColor(), //make it the color red
+            StrokeWidth = 25
+        };
+        var innerPaint = new SKPaint()
+        {
+            Style = SKPaintStyle.Fill,
+            Color = Color.LightBlue.ToSKColor(),
+        };
         async void Gyroscope_ReadingChanged(object sender, GyroscopeChangedEventArgs e)
         {
             //var data = e.Reading;
@@ -211,29 +273,29 @@ namespace HCIProject2_Part2
             };
 
 
-            //vCanvas.DrawCircle(surfaceWidth / 2, surfaceHeight / 2, radius, outerPaint);
-            //vCanvas.DrawCircle(surfaceWidth / 2, surfaceHeight / 2, radius, innerPaint);
+        //vCanvas.DrawCircle(surfaceWidth / 2, surfaceHeight / 2, radius, outerPaint);
+        //vCanvas.DrawCircle(surfaceWidth / 2, surfaceHeight / 2, radius, innerPaint);
 
-            
-            var angle = Math.PI * (startAngle + positionOfMarker) / 180.0;
+        
+        var angle = Math.PI * (startAngle + positionOfMarker) / 180.0;
 
-            //calculate the radius and the center point of the circle
-            var radius = (originalRect.Right - originalRect.Left) / 2;
-            var middlePoint = new SKPoint();
-            middlePoint.X = (originalRect.Left + radius);
-            middlePoint.Y = originalRect.Top + radius; //top of current circle plus radius
+        //calculate the radius and the center point of the circle
+        var radius = (originalRect.Right - originalRect.Left) / 2;
+        var middlePoint = new SKPoint();
+        middlePoint.X = (originalRect.Left + radius);
+        middlePoint.Y = originalRect.Top + radius; //top of current circle plus radius
 
-            surface.Canvas.DrawCircle(middlePoint.X + (float)(radius * Math.Cos(angle)),
-            middlePoint.Y + (float)(radius * Math.Sin(angle)), 20, circlePaint);
-            
-
-
+        surface.Canvas.DrawCircle(middlePoint.X + (float)(radius * Math.Cos(angle)),
+        middlePoint.Y + (float)(radius * Math.Sin(angle)), 20, circlePaint);
+        
 
 
-        }
 
-        **/
 
     }
+
+    **/
+
+}
     
 }
