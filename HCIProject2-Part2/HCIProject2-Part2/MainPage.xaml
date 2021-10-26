@@ -8,8 +8,8 @@
 
    
 
-    <!--
-    <Grid>
+    
+    <Grid HeightRequest="100" WidthRequest="100">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -22,11 +22,13 @@
                 <Ellipse x:Name="ballEllipse" Fill="Green" WidthRequest="100" HeightRequest="100" HorizontalOptions="Start" Grid.Row="1" Grid.Column="1"/>
         
     </Grid>
-    -->
+    
+    <!--
     <skia:SKCanvasView x:Name="canvasViews"
                            Grid.Row="1"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"
                            PaintSurface="OnCanvasViewPaintSurface" />
+    -->
 
 </ContentPage>

@@ -10,6 +10,8 @@ using SkiaSharp.Views.Forms;
 using SkiaSharp;
 using System.Threading;
 using System.Diagnostics;
+using System.Reflection;
+using System.IO;
 
 namespace HCIProject2_Part2
 {
@@ -25,9 +27,12 @@ namespace HCIProject2_Part2
         System.Diagnostics.Stopwatch stopwatch = new Stopwatch();
         bool pageIsActive;
         float angle = -90;
+        private SKBitmap resourceBitmap;
+        
 
         public MainPage()
         {
+
             Title = "Hedecagram Animation";
 
             canvasView = new SKCanvasView();
@@ -40,6 +45,10 @@ namespace HCIProject2_Part2
             // Register and Staart Accelermeter
             Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
             Accelerometer.Start(SensorSpeed.Fastest);
+
+            
+
+            //InitializeComponent();
         }
 
             
@@ -100,6 +109,13 @@ namespace HCIProject2_Part2
             SKSurface surface = args.Surface;
             SKCanvas canvas = surface.Canvas;
 
+            string resourceID = "HCIProject2-Part2.glassesTest.jpg";
+            Assembly assembly = GetType().GetTypeInfo().Assembly;
+            using (Stream stream = assembly.GetManifestResourceStream(resourceID))
+            {
+                resourceBitmap = SKBitmap.Decode(stream);
+            }
+
             canvas.Clear();
             canvas.Translate(info.Width / 2, info.Height / 2);
             float radius = (float)Math.Min(info.Width, info.Height) / 2 - 100;
@@ -111,8 +127,12 @@ namespace HCIProject2_Part2
 
                 float x = radius * (float)Math.Sin(Math.PI * angle / 180);
                 float y = -radius * (float)Math.Cos(Math.PI * angle / 180);
-                canvas.Translate(x, y);
-                canvas.DrawPath(MainPage.HendecagramPath, paint);
+                //canvas.Translate(x, y);
+                if (resourceBitmap != null) {
+                    canvas.DrawCircle(x, y, 100, paint);
+                    canvas.DrawPath(MainPage.HendecagramPath, paint);
+                    canvas.DrawBitmap(resourceBitmap,100,100);
+                }
             }
         }
         /**
@@ -139,6 +159,7 @@ namespace HCIProject2_Part2
         {
             var data = e.Reading;
             angle = (float)(0 - (90 * data.Acceleration.X));
+            Console.WriteLine(data.Acceleration.X);
             
             //Console.WriteLine($"Reading: X: {data.Acceleration.X}, Y: {data.Acceleration.Y}, Z: {data.Acceleration.Z}");
             //await ballEllipse.TranslateTo(e.Reading.Acceleration.X * -200, e.Reading.Acceleration.Y * 200, 200);
