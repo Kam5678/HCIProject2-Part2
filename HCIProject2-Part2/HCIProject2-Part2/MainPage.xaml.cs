@@ -23,7 +23,7 @@ namespace HCIProject2_Part2
         // https://stackoverflow.com/questions/62143553/xamarin-import-skbitmap-from-local-file-not-resource
         // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/basics/bitmaps
         // https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skcanvas.drawimage?view=skiasharp-2.80.2#SkiaSharp_SKCanvas_DrawImage_SkiaSharp_SKImage_SkiaSharp_SKPoint_SkiaSharp_SKPaint_
-
+        // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/bitmaps/displaying
         public static readonly SKPath HendecagramPath;
         const double cycleTime = 9000;      // in milliseconds
 
@@ -126,7 +126,7 @@ namespace HCIProject2_Part2
             SKSurface surface = args.Surface;
             SKCanvas canvas = surface.Canvas;
 
-            string resourceID = "HCIProject2-Part2.glassesTest.jpg";
+            string resourceID = "HCIProject2-Part2.KeyholeOnly.png";
             Assembly assembly = GetType().GetTypeInfo().Assembly;
             using (Stream stream = assembly.GetManifestResourceStream(resourceID))
             {
@@ -135,7 +135,7 @@ namespace HCIProject2_Part2
 
             canvas.Clear();
             canvas.Translate(info.Width / 2, info.Height / 2);
-            float radius = (float)Math.Min(info.Width, info.Height) / 2 -100 ;
+            float radius = (float)Math.Min(info.Width, info.Height) / 2 -10  ;
 
             SkiaSharp.SKPaint thickLinePaint = new SkiaSharp.SKPaint
             {
@@ -153,15 +153,25 @@ namespace HCIProject2_Part2
 
             float x = radius * (float)Math.Sin(Math.PI * angle / 180);
             float y = -radius * (float)Math.Cos(Math.PI * angle / 180);
-            canvas.DrawCircle(x, y, 100, paint);
-            canvas.DrawPath(MainPage.HendecagramPath, paint);
+            //canvas.DrawPath(MainPage.HendecagramPath, paint);
+
+          
+
+
             //canvas.Translate(x, y);
             if (resourceBitmap != null) {
                 canvas.DrawCircle(x, y, 100, paint);
-                canvas.DrawPath(MainPage.HendecagramPath, paint);
-                canvas.DrawBitmap(resourceBitmap, 100, 100);
+                SKRect rect = new SKRect(-2*resourceBitmap.Width / 2, -3*resourceBitmap.Height / 2, 2*resourceBitmap.Width / 2, resourceBitmap.Height / 2);
+                canvas.DrawBitmap(resourceBitmap, rect);
+                
+                // Draws Line from Middle to the Actual bar
+                canvas.DrawLine(0,0,x,y,thickLinePaint);
+                
+                //canvas.DrawBitmap(resourceBitmap, -resourceBitmap.Width/2, -resourceBitmap.Height/2);
                 //Console.WriteLine("x" + x);
-                //Console.WriteLine("y" + x);
+                //Console.WriteLine("y" + y);
+                //Console.WriteLine("x" + info.Width);
+                //Console.WriteLine("y" + info.Height);
                 float prevPointx = radius * (float)Math.Sin(Math.PI * 90 / 180);
                 float prevPointy = -radius * (float)Math.Cos(Math.PI * 90 / 180);
                 //Console.WriteLine(prevPointx);
@@ -188,6 +198,9 @@ namespace HCIProject2_Part2
             }
             
         }
+
+        
+
         /**
         public MainPage()
         {
