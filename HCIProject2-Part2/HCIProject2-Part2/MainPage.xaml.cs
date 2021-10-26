@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Essentials;
 using SkiaSharp.Views.Forms;
 using SkiaSharp;
 using System.Threading;
@@ -40,7 +39,7 @@ namespace HCIProject2_Part2
 
             // Register and Staart Accelermeter
             Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
-            Accelerometer.Start(SensorSpeed.UI);
+            Accelerometer.Start(SensorSpeed.Fastest);
         }
 
          protected override void OnAppearing()
@@ -49,7 +48,7 @@ namespace HCIProject2_Part2
             pageIsActive = true;
             stopwatch.Start();
 
-            Device.StartTimer(TimeSpan.FromMilliseconds(33), () =>
+            Device.StartTimer(TimeSpan.FromMilliseconds(80), () =>
             {
                 //var data = e.Reading;
                 //double t = stopwatch.Elapsed.TotalMilliseconds % cycleTime / cycleTime;
@@ -138,6 +137,7 @@ namespace HCIProject2_Part2
         {
             var data = e.Reading;
             angle = (float)(0 - (90 * data.Acceleration.X));
+            
             //Console.WriteLine($"Reading: X: {data.Acceleration.X}, Y: {data.Acceleration.Y}, Z: {data.Acceleration.Z}");
             //await ballEllipse.TranslateTo(e.Reading.Acceleration.X * -200, e.Reading.Acceleration.Y * 200, 200);
         }
