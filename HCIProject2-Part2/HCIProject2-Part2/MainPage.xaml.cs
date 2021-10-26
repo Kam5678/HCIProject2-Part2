@@ -177,15 +177,17 @@ namespace HCIProject2_Part2
             acceleration = (0.5f * e.Reading.Acceleration) + 0.95f * acceleration;
            
             float angleChoice = (float)(Math.Truncate(acceleration.X*100)/100);
-            Console.WriteLine(angleChoice);
+            //Console.WriteLine(angleChoice);
 
-            if (previousangle - angleChoice > 0.05 ^ previousangle - angleChoice < -0.05)
+            if (previousangle - angleChoice > 0.1 ^ previousangle - angleChoice < -0.1)
             {
                 angle = (float)(0 - (90 * angleChoice));
                 previousangle = angleChoice;
             }
+
             angle = (float)(0 - (90 * data.Acceleration.X));
-            Console.WriteLine(data.Acceleration.X);
+            Console.WriteLine(angle);
+            //Console.WriteLine(data.Acceleration.X);
             
             //Console.WriteLine($"Reading: X: {data.Acceleration.X}, Y: {data.Acceleration.Y}, Z: {data.Acceleration.Z}");
             //await ballEllipse.TranslateTo(e.Reading.Acceleration.X * -200, e.Reading.Acceleration.Y * 200, 200);
