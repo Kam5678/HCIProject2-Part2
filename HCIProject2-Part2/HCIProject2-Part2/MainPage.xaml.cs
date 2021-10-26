@@ -20,7 +20,7 @@ namespace HCIProject2_Part2
         // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/transforms/translate
 
         public static readonly SKPath HendecagramPath;
-        const double cycleTime = 2000;      // in milliseconds
+        const double cycleTime = 9000;      // in milliseconds
 
         SKCanvasView canvasView;
         System.Diagnostics.Stopwatch stopwatch = new Stopwatch();
@@ -41,7 +41,15 @@ namespace HCIProject2_Part2
             // Register and Staart Accelermeter
             Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
             Accelerometer.Start(SensorSpeed.UI);
+
+            //if (Gyroscope.IsMonitoring)
+            //    return;
+
+            //Gyroscope.ReadingChanged += Gyroscope_ReadingChanged;
+            //Gyroscope.Start(SensorSpeed.UI);
         }
+
+            
 
          protected override void OnAppearing()
         {
@@ -49,14 +57,14 @@ namespace HCIProject2_Part2
             pageIsActive = true;
             stopwatch.Start();
 
-            Device.StartTimer(TimeSpan.FromMilliseconds(33), () =>
+            Device.StartTimer(TimeSpan.FromMilliseconds(100), () =>
             {
                 //var data = e.Reading;
                 //double t = stopwatch.Elapsed.TotalMilliseconds % cycleTime / cycleTime;
                 //double t = data.Acceleration.X;
                 //angle = (float)(-90+(180 * t));
                 //Console.WriteLine(angle);
-                Console.WriteLine(angle);
+                //Console.WriteLine(angle);
                 canvasView.InvalidateSurface();
 
                 if (!pageIsActive)
@@ -137,10 +145,24 @@ namespace HCIProject2_Part2
         async void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
         {
             var data = e.Reading;
-            angle = (float)(0 - (90 * data.Acceleration.X));
+            decimal calculateAngle = Math.Round((decimal)(0 - (90 * data.Acceleration.X)), 2);
+            Console.WriteLine(calculateAngle);
+            //angle = (float)calculateAngle;
+            //angle = Math.Round((float)(0 - (90 * data.Acceleration.X)),2);
+            //Console.WriteLine($"Reading: X: {data.Acceleration.X}");
             //Console.WriteLine($"Reading: X: {data.Acceleration.X}, Y: {data.Acceleration.Y}, Z: {data.Acceleration.Z}");
             //await ballEllipse.TranslateTo(e.Reading.Acceleration.X * -200, e.Reading.Acceleration.Y * 200, 200);
         }
+
+        async void Gyroscope_ReadingChanged(object sender, GyroscopeChangedEventArgs e)
+        {
+            //var data = e.Reading;
+            // Process Angular Velocity X, Y, and Z reported in rad/s
+           // Console.WriteLine($"Reading: X: {data.AngularVelocity.X}, Y: {data.AngularVelocity.Y}, Z: {data.AngularVelocity.Z}");
+
+        }
+
+
 
         /**
         void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
