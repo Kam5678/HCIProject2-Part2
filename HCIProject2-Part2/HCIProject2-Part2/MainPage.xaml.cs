@@ -29,6 +29,7 @@ namespace HCIProject2_Part2
 
         SKCanvasView canvasView;
         System.Diagnostics.Stopwatch stopwatch = new Stopwatch();
+        System.Diagnostics.Stopwatch stopwatch2 = new Stopwatch();
         bool pageIsActive;
         float angle = -90;
         float previousangle = 0;
@@ -58,7 +59,7 @@ namespace HCIProject2_Part2
  
             };
             Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
-            angle = (float)(0 - (90 * acceleration.X));
+            //angle = (float)(0 - (90 * acceleration.X));
             Accelerometer.Start(SensorSpeed.Fastest);
            
 
@@ -141,7 +142,7 @@ namespace HCIProject2_Part2
             {
                 Style = SkiaSharp.SKPaintStyle.Stroke,
                 Color = SkiaSharp.SKColors.Red,
-                StrokeWidth = 16
+                StrokeWidth = 30
             };
 
             SkiaSharp.SKPaint paint = new SkiaSharp.SKPaint
@@ -199,7 +200,7 @@ namespace HCIProject2_Part2
             
         }
 
-        
+
 
         /**
         public MainPage()
@@ -243,18 +244,34 @@ namespace HCIProject2_Part2
             //await ballEllipse.TranslateTo(e.Reading.Acceleration.X * -200, e.Reading.Acceleration.Y * 200, 200);
         }
        **/
+        public void Todo(Stopwatch stopwatch2, float angle)
+        {
+            
+
+            if (stopwatch2.Elapsed.TotalSeconds >= 3 && angle == 90)
+            {
+
+                Console.WriteLine("Position Secure");
+                stopwatch2.Restart();
+            }
+        }
+
         async void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
         {
-            var data = e.Reading;
-            acceleration = (0.5f * e.Reading.Acceleration) + 0.5f * acceleration;
+            var data =  e.Reading;
+            acceleration = (0.5f * e.Reading.Acceleration) + 0.95f * acceleration;
 
             float angleChoice = (float)(Math.Truncate(acceleration.X * 100) / 100);
-            //Console.WriteLine(angleChoice);
+            
 
-            if (previousangle - angleChoice > 0.01 ^ previousangle - angleChoice < -0.01)
+            if (previousangle - angleChoice > 0.05 ^ previousangle - angleChoice < -0.05)
             {
                 angle = (float)(0 - (90 * angleChoice));
                 previousangle = angleChoice;
+            }
+            if (acceleration.Z > 3)
+            {
+                Console.WriteLine("Thrust");
             }
             if (angle > 90)
             {
@@ -263,6 +280,11 @@ namespace HCIProject2_Part2
             else if(angle< -90)
             {
                 angle = -90;
+            }
+            if (angle == 90)
+            {
+                stopwatch2.Start();
+                Todo(stopwatch2, angle);
             }
             //Console.WriteLine(angle);
 
