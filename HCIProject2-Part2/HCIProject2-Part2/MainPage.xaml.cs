@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Essentials;
 using SkiaSharp.Views.Forms;
 using SkiaSharp;
 using System.Threading;
@@ -40,13 +39,7 @@ namespace HCIProject2_Part2
 
             // Register and Staart Accelermeter
             Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
-            Accelerometer.Start(SensorSpeed.UI);
-
-            //if (Gyroscope.IsMonitoring)
-            //    return;
-
-            //Gyroscope.ReadingChanged += Gyroscope_ReadingChanged;
-            //Gyroscope.Start(SensorSpeed.UI);
+            Accelerometer.Start(SensorSpeed.Fastest);
         }
 
             
@@ -57,7 +50,7 @@ namespace HCIProject2_Part2
             pageIsActive = true;
             stopwatch.Start();
 
-            Device.StartTimer(TimeSpan.FromMilliseconds(100), () =>
+            Device.StartTimer(TimeSpan.FromMilliseconds(80), () =>
             {
                 //var data = e.Reading;
                 //double t = stopwatch.Elapsed.TotalMilliseconds % cycleTime / cycleTime;
@@ -145,11 +138,8 @@ namespace HCIProject2_Part2
         async void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
         {
             var data = e.Reading;
-            decimal calculateAngle = Math.Round((decimal)(0 - (90 * data.Acceleration.X)), 2);
-            Console.WriteLine(calculateAngle);
-            //angle = (float)calculateAngle;
-            //angle = Math.Round((float)(0 - (90 * data.Acceleration.X)),2);
-            //Console.WriteLine($"Reading: X: {data.Acceleration.X}");
+            angle = (float)(0 - (90 * data.Acceleration.X));
+            
             //Console.WriteLine($"Reading: X: {data.Acceleration.X}, Y: {data.Acceleration.Y}, Z: {data.Acceleration.Z}");
             //await ballEllipse.TranslateTo(e.Reading.Acceleration.X * -200, e.Reading.Acceleration.Y * 200, 200);
         }
