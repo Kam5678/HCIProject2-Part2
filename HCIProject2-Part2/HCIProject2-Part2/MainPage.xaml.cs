@@ -42,6 +42,9 @@ namespace HCIProject2_Part2
         float degrees = 0;
         bool startOnce = false;
         bool startOnce1 = false;
+        float loginAngle = 90;
+        float loginAngle1 = -90;
+        bool check1 = true;
 
         private SKBitmap resourceBitmap;
         private SKBitmap resourceBitmap2;
@@ -240,7 +243,7 @@ namespace HCIProject2_Part2
                 canvas.DrawCircle(0, 10, 400, circle);
                 canvas.DrawCircle(0, 10, 418, circle);
                 
-                if (check == false)
+                if (check == false && check1==false)
                 {
                     
                     if (degrees < 90)
@@ -330,7 +333,29 @@ namespace HCIProject2_Part2
                 Console.WriteLine("Position Secure");
                 stopwatch2.Restart();
                 check = false;
+                
+
+            }
+        }
+        public void Todo2(Stopwatch stopwatch2)
+        {
+
+
+            if (stopwatch2.Elapsed.TotalSeconds >= 3)
+            {
+                var assemblys = typeof(App).GetTypeInfo().Assembly;
+                Stream audioStream = assemblys.GetManifestResourceStream("HCIProject2-Part2.lock.wav");
+
+
+                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                player.Load(audioStream);
+                player.Play();
+
+                Console.WriteLine("Position Secure");
+                stopwatch2.Restart();
+                check1 = false;
                 Accelerometer.Stop();
+                
 
             }
         }
@@ -348,7 +373,7 @@ namespace HCIProject2_Part2
                 angle = (float)(0 - (90 * angleChoice));
                 previousangle = angleChoice;
             }
-            if (acceleration.Z > 3 && check==false)
+            if (acceleration.Z > 3 && check == false && check1 == false)
             {
                 Console.WriteLine("Thrust");
                 var assemblys = typeof(App).GetTypeInfo().Assembly;
@@ -376,10 +401,16 @@ namespace HCIProject2_Part2
                 angle = -90;
             }
             Console.WriteLine(angle);
-            if (angle>=85 && angle<=95)
+            if (angle>=loginAngle-5 && angle<=loginAngle+5)
             {
                 stopwatch2.Start();
                 Todo(stopwatch2);
+                Console.WriteLine("here");
+            }
+            else if (angle >= loginAngle1 - 5 && angle <= loginAngle1 + 5 && check==false)
+            {
+                stopwatch2.Start();
+                Todo2(stopwatch2);
                 Console.WriteLine("here");
             }
             else
