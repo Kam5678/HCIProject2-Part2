@@ -145,6 +145,27 @@ namespace HCIProject2_Part2
                 StrokeWidth = 30
             };
 
+            SkiaSharp.SKPaint lockPickPaint = new SkiaSharp.SKPaint
+            {
+                Style = SkiaSharp.SKPaintStyle.Stroke,
+                Color = SkiaSharp.SKColors.LightGray,
+                StrokeWidth = 15
+            };
+            SkiaSharp.SKPaint lockPickPaintHandle = new SkiaSharp.SKPaint
+            {
+                Style = SkiaSharp.SKPaintStyle.Stroke,
+                Color = SkiaSharp.SKColors.Black,
+                StrokeWidth = 45
+            };
+
+            SkiaSharp.SKPaint circle = new SkiaSharp.SKPaint
+            {
+                Style = SkiaSharp.SKPaintStyle.Stroke,
+                Color = SkiaSharp.SKColors.Black,
+                IsAntialias = true,
+                StrokeWidth = 15
+            };
+
             SkiaSharp.SKPaint paint = new SkiaSharp.SKPaint
             {
                 Style = SkiaSharp.SKPaintStyle.Fill,
@@ -161,13 +182,19 @@ namespace HCIProject2_Part2
 
             //canvas.Translate(x, y);
             if (resourceBitmap != null) {
-                canvas.DrawCircle(x, y, 100, paint);
-                SKRect rect = new SKRect(-2*resourceBitmap.Width / 2, -3*resourceBitmap.Height / 2, 2*resourceBitmap.Width / 2, resourceBitmap.Height / 2);
+                //canvas.DrawCircle(x, y, 100, paint);
+                SKRect rect = new SKRect((float)-1.3*resourceBitmap.Width / 2, (float)-1.3*resourceBitmap.Height / 2, (float)1.3*resourceBitmap.Width / 2, (float)1.3*resourceBitmap.Height);
                 canvas.DrawBitmap(resourceBitmap, rect);
                 
                 // Draws Line from Middle to the Actual bar
-                canvas.DrawLine(0,0,x,y,thickLinePaint);
-                
+                canvas.DrawCircle(0, 50, 400, circle );
+                canvas.DrawCircle(0, 50, 418, circle);
+
+                //canvas.DrawLine(x / 10, y / 10, (x / 10) - 15, (y / 10) - 15, lockPickPaint);
+
+
+
+
                 //canvas.DrawBitmap(resourceBitmap, -resourceBitmap.Width/2, -resourceBitmap.Height/2);
                 //Console.WriteLine("x" + x);
                 //Console.WriteLine("y" + y);
@@ -193,9 +220,11 @@ namespace HCIProject2_Part2
                     prevPointx = nextPointX;
                     prevPointy = nextPointY;
                 }
-                
+                canvas.DrawLine(x / 10, y / 10, x / 2, y / 2, lockPickPaint);
+                canvas.DrawLine(x / 2, y / 2, (float)1.1*x, (float)1.1*y, lockPickPaintHandle);
+
                 //Console.WriteLine(prevPointx);
-                
+
             }
             
         }
@@ -264,7 +293,7 @@ namespace HCIProject2_Part2
             float angleChoice = (float)(Math.Truncate(acceleration.X * 100) / 100);
             
 
-            if (previousangle - angleChoice > 0.05 ^ previousangle - angleChoice < -0.05)
+            if (previousangle - angleChoice > 0.1 ^ previousangle - angleChoice < -0.1)
             {
                 angle = (float)(0 - (90 * angleChoice));
                 previousangle = angleChoice;
