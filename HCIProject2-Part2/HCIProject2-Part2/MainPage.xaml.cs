@@ -244,9 +244,9 @@ namespace HCIProject2_Part2
                 //Console.WriteLine(prevPointx);
                 if (check == false)
                 {
-                   // canvas.Clear();
-                   // Accelerometer.Stop();
-                   // canvas.DrawBitmap(resourceBitmap2, rect);
+                    canvas.Clear();
+                    Accelerometer.Stop();
+                    canvas.DrawBitmap(resourceBitmap2, rect);
                   
                 }
             }
@@ -340,6 +340,7 @@ namespace HCIProject2_Part2
                 stopwatch2.Start();
                 Todo(stopwatch2, angle);
             }
+
             
             //Console.WriteLine(angle);
 
