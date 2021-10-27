@@ -26,7 +26,7 @@ namespace HCIProject2_Part2
         // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/bitmaps/displaying
         public static readonly SKPath HendecagramPath;
         const double cycleTime = 9000;      // in milliseconds
-
+        bool check = true;
         SKCanvasView canvasView;
         System.Diagnostics.Stopwatch stopwatch = new Stopwatch();
         System.Diagnostics.Stopwatch stopwatch2 = new Stopwatch();
@@ -36,7 +36,7 @@ namespace HCIProject2_Part2
         Vector3 acceleration;
 
         private SKBitmap resourceBitmap;
-        
+        private SKBitmap resourceBitmap2;
 
         public MainPage()
         {
@@ -61,9 +61,9 @@ namespace HCIProject2_Part2
             Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
             //angle = (float)(0 - (90 * acceleration.X));
             Accelerometer.Start(SensorSpeed.Fastest);
-           
 
             
+
 
             //InitializeComponent();
         }
@@ -134,9 +134,16 @@ namespace HCIProject2_Part2
                 resourceBitmap = SKBitmap.Decode(stream);
             }
 
+            string resourceID2 = "HCIProject2-Part2.KeyholeOnlyturn.png";
+            Assembly assembly2 = GetType().GetTypeInfo().Assembly;
+            using (Stream stream = assembly.GetManifestResourceStream(resourceID2))
+            {
+                resourceBitmap2 = SKBitmap.Decode(stream);
+            }
+
             canvas.Clear();
             canvas.Translate(info.Width / 2, info.Height / 2);
-            float radius = (float)Math.Min(info.Width, info.Height) / 2 -10  ;
+            float radius = (float)Math.Min(info.Width, info.Height) / 2 -10;
 
             SkiaSharp.SKPaint thickLinePaint = new SkiaSharp.SKPaint
             {
@@ -189,7 +196,7 @@ namespace HCIProject2_Part2
                 // Draws Line from Middle to the Actual bar
                 canvas.DrawCircle(0, 50, 400, circle );
                 canvas.DrawCircle(0, 50, 418, circle);
-
+                
                 //canvas.DrawLine(x / 10, y / 10, (x / 10) - 15, (y / 10) - 15, lockPickPaint);
 
 
@@ -224,12 +231,18 @@ namespace HCIProject2_Part2
                 canvas.DrawLine(x / 2, y / 2, (float)1.1*x, (float)1.1*y, lockPickPaintHandle);
 
                 //Console.WriteLine(prevPointx);
-
+                if (check == false)
+                {
+                    canvas.Clear();
+                    Accelerometer.Stop();
+                    canvas.DrawBitmap(resourceBitmap2, rect);
+                  
+                }
             }
             
         }
 
-
+    
 
         /**
         public MainPage()
@@ -282,6 +295,7 @@ namespace HCIProject2_Part2
 
                 Console.WriteLine("Position Secure");
                 stopwatch2.Restart();
+                check = false;
             }
         }
 
@@ -315,6 +329,7 @@ namespace HCIProject2_Part2
                 stopwatch2.Start();
                 Todo(stopwatch2, angle);
             }
+            
             //Console.WriteLine(angle);
 
 

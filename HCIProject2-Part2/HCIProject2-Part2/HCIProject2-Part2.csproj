@@ -13,12 +13,14 @@
   <ItemGroup>
     <None Remove="glassesTest.jpg" />
     <None Remove="KeyholeOnly.png" />
+    <None Remove="KeyholeOnlyturn.png" />
     <None Remove="KeyholeR.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="glassesTest.jpg" />
     <EmbeddedResource Include="KeyholeOnly.png" />
+    <EmbeddedResource Include="KeyholeOnlyturn.png" />
     <EmbeddedResource Include="KeyholeR.png" />
   </ItemGroup>
 
