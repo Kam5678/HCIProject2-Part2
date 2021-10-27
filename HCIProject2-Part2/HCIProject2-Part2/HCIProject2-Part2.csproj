@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AnimationSound.mp3" />
     <None Remove="glassesTest.jpg" />
     <None Remove="KeyholeOnly.png" />
     <None Remove="KeyholeOnlyturn.png" />
@@ -20,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="AnimationSound.mp3" />
     <EmbeddedResource Include="lock.mp3" />
   </ItemGroup>
 

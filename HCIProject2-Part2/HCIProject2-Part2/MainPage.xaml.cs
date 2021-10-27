@@ -41,9 +41,13 @@ namespace HCIProject2_Part2
         Vector3 acceleration;
         float degrees = 0;
         bool startOnce = false;
+        bool startOnce1 = false;
 
         private SKBitmap resourceBitmap;
         private SKBitmap resourceBitmap2;
+        
+
+       
 
 
       
@@ -138,6 +142,11 @@ namespace HCIProject2_Part2
             SKImageInfo info = args.Info;
             SKSurface surface = args.Surface;
             SKCanvas canvas = surface.Canvas;
+            var assemblys = typeof(App).GetTypeInfo().Assembly;
+            Stream audioStream = assemblys.GetManifestResourceStream("HCIProject2-Part2.AnimationSound.mp3");
+
+
+            var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
 
             string resourceID = "HCIProject2-Part2.KeyholeOnly.png";
             Assembly assembly = GetType().GetTypeInfo().Assembly;
@@ -230,11 +239,23 @@ namespace HCIProject2_Part2
                 SKRect rect = new SKRect((float)-1.2*resourceBitmap.Width / 2, (float)-1.0*resourceBitmap.Height / 2, (float)1.2*resourceBitmap.Width / 2, (float)1.0*resourceBitmap.Height);
                 canvas.DrawCircle(0, 10, 400, circle);
                 canvas.DrawCircle(0, 10, 418, circle);
+                
                 if (check == false)
                 {
                     
                     if (degrees < 90)
                     {
+
+                        if (!startOnce1)
+                        {
+                           
+                            player.Load(audioStream);
+
+                            player.Play();
+
+                            startOnce1 = true;
+                        }
+                       
                         canvas.Save();
                         canvas.RotateDegrees(degrees);
 
@@ -250,6 +271,7 @@ namespace HCIProject2_Part2
                     }
                     else
                     {
+                        player.Stop();
                         canvas.Save();
                         canvas.RotateDegrees(degrees);
 
@@ -304,6 +326,7 @@ namespace HCIProject2_Part2
                 var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
                 player.Load(audioStream);
                 player.Play();
+
                 Console.WriteLine("Position Secure");
                 stopwatch2.Restart();
                 check = false;
@@ -336,6 +359,7 @@ namespace HCIProject2_Part2
                 player.Load(audioStream);
 
                 player.Play();
+                Thread.Sleep(1000);
                 Accelerometer.Stop();
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
