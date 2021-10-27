@@ -36,6 +36,7 @@ namespace HCIProject2_Part2
         float angle = -90;
         float previousangle = 0;
         Vector3 acceleration;
+        float degrees = 0;
 
         private SKBitmap resourceBitmap;
         private SKBitmap resourceBitmap2;
@@ -199,115 +200,84 @@ namespace HCIProject2_Part2
             float y = -radius * (float)Math.Cos(Math.PI * angle / 180);
             //canvas.DrawPath(MainPage.HendecagramPath, paint);
 
-          
+            float prevPointx = radius * (float)Math.Sin(Math.PI * 90 / 180);
+            float prevPointy = -radius * (float)Math.Cos(Math.PI * 90 / 180);
+
+            for (double i = 90; i >= -90; i -= 0.1)
+            {
+                SkiaSharp.SKPaint arcpaint = new SkiaSharp.SKPaint
+                {
+                    Style = SkiaSharp.SKPaintStyle.Fill,
+                    Color = SkiaSharp.SKColor.FromHsl((float)(i / 2), 100, 50),
+                    StrokeWidth = 30
+                };
+
+                float nextPointX = radius * (float)Math.Sin(Math.PI * i / 180);
+                float nextPointY = -radius * (float)Math.Cos(Math.PI * i / 180);
+                canvas.DrawLine(prevPointx, prevPointy, nextPointX, nextPointY, arcpaint);
+                prevPointx = nextPointX;
+                prevPointy = nextPointY;
+            }
+
 
 
             //canvas.Translate(x, y);
             if (resourceBitmap != null) {
                 //canvas.DrawCircle(x, y, 100, paint);
                 SKRect rect = new SKRect((float)-1.2*resourceBitmap.Width / 2, (float)-1.0*resourceBitmap.Height / 2, (float)1.2*resourceBitmap.Width / 2, (float)1.0*resourceBitmap.Height);
-                canvas.DrawBitmap(resourceBitmap, rect);
-                
-                // Draws Line from Middle to the Actual bar
-                canvas.DrawCircle(0, 50, 400, circle );
+                canvas.DrawCircle(0, 50, 400, circle);
                 canvas.DrawCircle(0, 50, 418, circle);
-                
-                //canvas.DrawLine(x / 10, y / 10, (x / 10) - 15, (y / 10) - 15, lockPickPaint);
-
-
-
-
-                //canvas.DrawBitmap(resourceBitmap, -resourceBitmap.Width/2, -resourceBitmap.Height/2);
-                //Console.WriteLine("x" + x);
-                //Console.WriteLine("y" + y);
-                //Console.WriteLine("x" + info.Width);
-                //Console.WriteLine("y" + info.Height);
-                float prevPointx = radius * (float)Math.Sin(Math.PI * 90 / 180);
-                float prevPointy = -radius * (float)Math.Cos(Math.PI * 90 / 180);
-                //Console.WriteLine(prevPointx);
-                //Console.WriteLine(prevPointy);
-                
-                for (double i=90; i >= -90; i-=0.1)
-                {
-                    SkiaSharp.SKPaint arcpaint = new SkiaSharp.SKPaint
-                    {
-                        Style = SkiaSharp.SKPaintStyle.Fill,
-                        Color = SkiaSharp.SKColor.FromHsl((float)(i/2), 100, 50),
-                        StrokeWidth=30
-                    };
-
-                    float nextPointX = radius * (float)Math.Sin(Math.PI * i / 180);
-                    float nextPointY = -radius * (float)Math.Cos(Math.PI * i / 180);
-                    canvas.DrawLine(prevPointx, prevPointy, nextPointX, nextPointY, arcpaint);
-                    prevPointx = nextPointX;
-                    prevPointy = nextPointY;
-                }
-                canvas.DrawLine(x / 10, y / 10, x / 2, y / 2, lockPickPaint);
-                canvas.DrawLine(x / 2, y / 2, (float)1.1*x, (float)1.1*y, lockPickPaintHandleBlack);
-
-                canvas.DrawLine((-x / 10), (-y/10)+170, (-x / 2), (-y / 2)+170, lockPickPaint);
-                canvas.DrawLine((-x / 2), (-y / 2) + 170,(float)((-2.1*x/2)) ,(float)((-2.1*y/2)+170) , lockPickPaintHandleRed);
-                canvas.DrawLine(x / 2, y / 2, (float)1.1 * x, (float)1.1 * y, lockPickPaintHandleBlack);
-
-                //Console.WriteLine(prevPointx);
                 if (check == false)
                 {
-                    canvas.Clear();
-                    Accelerometer.Stop();
-                    canvas.DrawBitmap(resourceBitmap2, rect);
+                    if (degrees <= 90)
+                    {
+                        canvas.Save();
+                        canvas.RotateDegrees(degrees);
 
-                   var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
-                    player.Load("lock.mp3");
-                   player.Play();
+                        canvas.DrawBitmap(resourceBitmap, rect);
+                        canvas.DrawLine(x / 10, y / 10, x / 2, y / 2, lockPickPaint);
+                        canvas.DrawLine(x / 2, y / 2, (float)1.1 * x, (float)1.1 * y, lockPickPaintHandleBlack);
+
+                        canvas.DrawLine((-x / 10), (-y / 10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
+                        canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
+                        canvas.Restore();
+                        degrees += (float)2;
+                    }
+                    else
+                    {
+                        canvas.Save();
+                        canvas.RotateDegrees(degrees);
+
+                        canvas.DrawBitmap(resourceBitmap, rect);
+                        //canvas.DrawLine(x / 10, y / 10, x / 2, y / 2, lockPickPaint);
+                        //canvas.DrawLine(x / 2, y / 2, (float)1.1 * x, (float)1.1 * y, lockPickPaintHandleBlack);
+
+                        //canvas.DrawLine((-x / 10), (-y / 10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
+                        //canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
+                        canvas.Restore();
+                    }
+                    Accelerometer.Stop();
                 }
+                else
+                {
+                    canvas.DrawBitmap(resourceBitmap, rect);
+
+                   
+
+                    canvas.DrawLine(x / 10, y / 10, x / 2, y / 2, lockPickPaint);
+                    canvas.DrawLine(x / 2, y / 2, (float)1.1 * x, (float)1.1 * y, lockPickPaintHandleBlack);
+
+                    canvas.DrawLine((-x / 10), (-y / 10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
+                    canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
+                    //canvas.DrawLine(x / 2, y / 2, (float)1.1 * x, (float)1.1 * y, lockPickPaintHandleBlack);
+                }
+  
             }
             
         }
 
 
    
-        /**
-        public MainPage()
-        {
-            InitializeComponent();
-            if (Accelerometer.IsMonitoring)
-                return;
-
-            // Register and Staart Accelermeter
-            Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
-            Accelerometer.Start(SensorSpeed.UI);
-            
-
-            //get the canvas & info
-            
-
-        }
-        **/
-
-
-        /**
-        async void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
-        {
-            var data = e.Reading;
-            acceleration = (0.5f * e.Reading.Acceleration) + 0.95f * acceleration;
-           
-            float angleChoice = (float)(Math.Truncate(acceleration.X*100)/100);
-            //Console.WriteLine(angleChoice);
-
-            if (previousangle - angleChoice > 0.1 ^ previousangle - angleChoice < -0.1)
-            {
-                angle = (float)(0 - (90 * angleChoice));
-                previousangle = angleChoice;
-            }
-
-            angle = (float)(0 - (90 * data.Acceleration.X));
-            Console.WriteLine(angle);
-            //Console.WriteLine(data.Acceleration.X);
-            
-            //Console.WriteLine($"Reading: X: {data.Acceleration.X}, Y: {data.Acceleration.Y}, Z: {data.Acceleration.Z}");
-            //await ballEllipse.TranslateTo(e.Reading.Acceleration.X * -200, e.Reading.Acceleration.Y * 200, 200);
-        }
-       **/
         public void Todo(Stopwatch stopwatch2)
         {
             
@@ -369,108 +339,7 @@ namespace HCIProject2_Part2
 
 
 
-        /**
-        void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
-        {
-            //Initialize the Canvas  
-            SKSurface vSurface = args.Surface;
-            SKCanvas vCanvas = vSurface.Canvas;
-            int surfaceWidth = args.Info.Width;
-            int surfaceHeight = args.Info.Height;
-            float radius = (Math.Min(surfaceHeight, surfaceWidth) * 0.5f) - 25;
-            //Clear the Canvas  
-            vCanvas.Clear();
-            //Creating the Paint object to color the Items  
-            SKPaint vBlackPaint = new SKPaint
-            {
-                Color = SKColors.Black,
-                StrokeWidth = 5,
-                StrokeCap = SKStrokeCap.Round,
-                TextSize = 60
-            };
-            SKPaint vWhitePaint = new SKPaint
-            {
-                Color = SKColors.White
-            };
-            var outerPaint = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke, //stroke so that it traces the outline
-                Color = Color.DarkBlue.ToSKColor(), //make it the color red
-                StrokeWidth = 25
-            };
-            var innerPaint = new SKPaint()
-            {
-                Style = SKPaintStyle.Fill,
-                Color = Color.LightBlue.ToSKColor(),
-            };
-            async void Gyroscope_ReadingChanged(object sender, GyroscopeChangedEventArgs e)
-            {
-                //var data = e.Reading;
-                // Process Angular Velocity X, Y, and Z reported in rad/s
-               // Console.WriteLine($"Reading: X: {data.AngularVelocity.X}, Y: {data.AngularVelocity.Y}, Z: {data.AngularVelocity.Z}");
-
-            }
-
-
-
-            /**
-            void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
-            {
-                //Initialize the Canvas  
-                SKSurface vSurface = args.Surface;
-                SKCanvas vCanvas = vSurface.Canvas;
-                int surfaceWidth = args.Info.Width;
-                int surfaceHeight = args.Info.Height;
-                float radius = (Math.Min(surfaceHeight, surfaceWidth) * 0.5f) - 25;
-                //Clear the Canvas  
-                vCanvas.Clear();
-                //Creating the Paint object to color the Items  
-                SKPaint vBlackPaint = new SKPaint
-                {
-                    Color = SKColors.Black,
-                    StrokeWidth = 5,
-                    StrokeCap = SKStrokeCap.Round,
-                    TextSize = 60
-                };
-                SKPaint vWhitePaint = new SKPaint
-                {
-                    Color = SKColors.White
-                };
-                var outerPaint = new SKPaint
-                {
-                    Style = SKPaintStyle.Stroke, //stroke so that it traces the outline
-                    Color = Color.DarkBlue.ToSKColor(), //make it the color red
-                    StrokeWidth = 25
-                };
-                var innerPaint = new SKPaint()
-                {
-                    Style = SKPaintStyle.Fill,
-                    Color = Color.LightBlue.ToSKColor(),
-                };
-
-
-            //vCanvas.DrawCircle(surfaceWidth / 2, surfaceHeight / 2, radius, outerPaint);
-            //vCanvas.DrawCircle(surfaceWidth / 2, surfaceHeight / 2, radius, innerPaint);
-
-            
-            var angle = Math.PI * (startAngle + positionOfMarker) / 180.0;
-
-            //calculate the radius and the center point of the circle
-            var radius = (originalRect.Right - originalRect.Left) / 2;
-            var middlePoint = new SKPoint();
-            middlePoint.X = (originalRect.Left + radius);
-            middlePoint.Y = originalRect.Top + radius; //top of current circle plus radius
-
-            surface.Canvas.DrawCircle(middlePoint.X + (float)(radius * Math.Cos(angle)),
-            middlePoint.Y + (float)(radius * Math.Sin(angle)), 20, circlePaint);
-            
-
-
-
-
-        }
-
-        **/
+        
 
     }
     
