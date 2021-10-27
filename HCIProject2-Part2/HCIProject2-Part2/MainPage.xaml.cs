@@ -323,7 +323,7 @@ namespace HCIProject2_Part2
             if (stopwatch2.Elapsed.TotalSeconds >= 3)
             {
                 var assemblys = typeof(App).GetTypeInfo().Assembly;
-                Stream audioStream = assemblys.GetManifestResourceStream("HCIProject2-Part2.lock.wav");
+                Stream audioStream = assemblys.GetManifestResourceStream("HCIProject2-Part2.LockClick.mp3");
 
 
                 var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
@@ -344,7 +344,7 @@ namespace HCIProject2_Part2
             if (stopwatch2.Elapsed.TotalSeconds >= 3)
             {
                 var assemblys = typeof(App).GetTypeInfo().Assembly;
-                Stream audioStream = assemblys.GetManifestResourceStream("HCIProject2-Part2.lock.wav");
+                Stream audioStream = assemblys.GetManifestResourceStream("HCIProject2-Part2.LockClick.mp3");
 
 
                 var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;

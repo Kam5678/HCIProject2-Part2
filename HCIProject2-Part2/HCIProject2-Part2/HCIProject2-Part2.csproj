@@ -18,6 +18,7 @@
     <None Remove="KeyholeR.png" />
     <None Remove="lock.mp3" />
     <None Remove="lock.wav" />
+    <None Remove="LockClick.mp3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +32,7 @@
     <EmbeddedResource Include="KeyholeOnlyturn.png" />
     <EmbeddedResource Include="KeyholeR.png" />
     <EmbeddedResource Include="lock.wav" />
+    <EmbeddedResource Include="LockClick.mp3" />
   </ItemGroup>
 
   <ItemGroup>
