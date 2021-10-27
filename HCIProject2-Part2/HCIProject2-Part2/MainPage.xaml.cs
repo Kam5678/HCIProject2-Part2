@@ -26,6 +26,9 @@ namespace HCIProject2_Part2
         // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/basics/bitmaps
         // https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skcanvas.drawimage?view=skiasharp-2.80.2#SkiaSharp_SKCanvas_DrawImage_SkiaSharp_SKImage_SkiaSharp_SKPoint_SkiaSharp_SKPaint_
         // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/bitmaps/displaying
+        // https://devblogs.microsoft.com/xamarin/adding-sound-xamarin-forms-app/
+        // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/transforms/rotate
+
         public static readonly SKPath HendecagramPath;
         const double cycleTime = 9000;      // in milliseconds
         bool check = true;
