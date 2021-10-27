@@ -158,10 +158,17 @@ namespace HCIProject2_Part2
                 Color = SkiaSharp.SKColors.LightGray,
                 StrokeWidth = 15
             };
-            SkiaSharp.SKPaint lockPickPaintHandle = new SkiaSharp.SKPaint
+            SkiaSharp.SKPaint lockPickPaintHandleBlack = new SkiaSharp.SKPaint
             {
                 Style = SkiaSharp.SKPaintStyle.Stroke,
                 Color = SkiaSharp.SKColors.Black,
+                StrokeWidth = 45
+            };
+
+            SkiaSharp.SKPaint lockPickPaintHandleRed = new SkiaSharp.SKPaint
+            {
+                Style = SkiaSharp.SKPaintStyle.Stroke,
+                Color = SkiaSharp.SKColors.Red,
                 StrokeWidth = 45
             };
 
@@ -190,7 +197,7 @@ namespace HCIProject2_Part2
             //canvas.Translate(x, y);
             if (resourceBitmap != null) {
                 //canvas.DrawCircle(x, y, 100, paint);
-                SKRect rect = new SKRect((float)-1.0*resourceBitmap.Width / 2, (float)-1.0*resourceBitmap.Height / 2, (float)1.0*resourceBitmap.Width / 2, (float)1.0*resourceBitmap.Height);
+                SKRect rect = new SKRect((float)-1.2*resourceBitmap.Width / 2, (float)-1.0*resourceBitmap.Height / 2, (float)1.2*resourceBitmap.Width / 2, (float)1.0*resourceBitmap.Height);
                 canvas.DrawBitmap(resourceBitmap, rect);
                 
                 // Draws Line from Middle to the Actual bar
@@ -228,14 +235,18 @@ namespace HCIProject2_Part2
                     prevPointy = nextPointY;
                 }
                 canvas.DrawLine(x / 10, y / 10, x / 2, y / 2, lockPickPaint);
-                canvas.DrawLine(x / 2, y / 2, (float)1.1*x, (float)1.1*y, lockPickPaintHandle);
+                canvas.DrawLine(x / 2, y / 2, (float)1.1*x, (float)1.1*y, lockPickPaintHandleBlack);
+
+                canvas.DrawLine((-x / 10), (-y/10)+170, (-x / 2), (-y / 2)+170, lockPickPaint);
+                canvas.DrawLine((-x / 2), (-y / 2) + 170,(float)((-2.1*x/2)) ,(float)((-2.1*y/2)+170) , lockPickPaintHandleRed);
+                canvas.DrawLine(x / 2, y / 2, (float)1.1 * x, (float)1.1 * y, lockPickPaintHandleBlack);
 
                 //Console.WriteLine(prevPointx);
                 if (check == false)
                 {
-                    canvas.Clear();
-                    Accelerometer.Stop();
-                    canvas.DrawBitmap(resourceBitmap2, rect);
+                   // canvas.Clear();
+                   // Accelerometer.Stop();
+                   // canvas.DrawBitmap(resourceBitmap2, rect);
                   
                 }
             }
