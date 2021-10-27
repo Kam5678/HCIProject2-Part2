@@ -40,6 +40,12 @@ namespace HCIProject2_Part2
         private SKBitmap resourceBitmap;
         private SKBitmap resourceBitmap2;
 
+        public interface IReadStream
+        {
+            Stream ReadStreamFromAsset();
+        }
+
+
         public MainPage()
         {
 
@@ -250,9 +256,9 @@ namespace HCIProject2_Part2
                     Accelerometer.Stop();
                     canvas.DrawBitmap(resourceBitmap2, rect);
 
-                   // var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
-                   // player.Load("HCIProject2-Part2.lock.mp3");
-                   // player.Play();
+                   var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                    player.Load("lock.mp3");
+                   player.Play();
                 }
             }
             
@@ -337,7 +343,7 @@ namespace HCIProject2_Part2
                 angle = 90;
               
                     stopwatch2.Start();
-                    Todo(stopwatch2, angle);
+                    Todo(stopwatch2);
                 
             }
             else if (angle < -90)
