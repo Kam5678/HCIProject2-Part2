@@ -41,14 +41,13 @@ namespace HCIProject2_Part2
         private SKBitmap resourceBitmap;
         private SKBitmap resourceBitmap2;
 
-        public interface IReadStream
-        {
-            Stream ReadStreamFromAsset();
-        }
 
+      
 
         public MainPage()
         {
+      
+
 
             Title = "Hedecagram Animation";
 
@@ -229,7 +228,8 @@ namespace HCIProject2_Part2
                 canvas.DrawCircle(0, 10, 418, circle);
                 if (check == false)
                 {
-                    if (degrees <= 90)
+                    
+                    if (degrees < 90)
                     {
                         canvas.Save();
                         canvas.RotateDegrees(degrees);
@@ -259,7 +259,7 @@ namespace HCIProject2_Part2
                         
 
                     }
-                    Accelerometer.Stop();
+                    
                 }
                 else
                 {
@@ -274,7 +274,7 @@ namespace HCIProject2_Part2
                     canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
                     //canvas.DrawLine(x / 2, y / 2, (float)1.1 * x, (float)1.1 * y, lockPickPaintHandleBlack);
                 }
-  
+                
             }
             
         }
@@ -287,7 +287,13 @@ namespace HCIProject2_Part2
 
             if (stopwatch2.Elapsed.TotalSeconds >= 3)
             {
+                var assemblys = typeof(App).GetTypeInfo().Assembly;
+                Stream audioStream = assemblys.GetManifestResourceStream("HCIProject2-Part2.lock.wav");
 
+
+                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                player.Load(audioStream);
+                player.Play();
                 Console.WriteLine("Position Secure");
                 stopwatch2.Restart();
                 check = false;
@@ -307,9 +313,10 @@ namespace HCIProject2_Part2
                 angle = (float)(0 - (90 * angleChoice));
                 previousangle = angleChoice;
             }
-            if (acceleration.Z > 3)
+            if (acceleration.Z > 3 && check == false)
             {
                 Console.WriteLine("Thrust");
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
             if (angle >= 90)
             {
