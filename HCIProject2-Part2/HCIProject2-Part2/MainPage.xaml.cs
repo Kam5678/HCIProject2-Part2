@@ -152,7 +152,7 @@ namespace HCIProject2_Part2
 
             canvas.Clear();
             canvas.Translate(info.Width / 2, info.Height / 2);
-            float radius = (float)Math.Min(info.Width, info.Height) / 2 -10;
+            float radius = (float)Math.Min(info.Width, info.Height) / 2 -20;
 
             SkiaSharp.SKPaint thickLinePaint = new SkiaSharp.SKPaint
             {
@@ -225,8 +225,8 @@ namespace HCIProject2_Part2
             if (resourceBitmap != null) {
                 //canvas.DrawCircle(x, y, 100, paint);
                 SKRect rect = new SKRect((float)-1.2*resourceBitmap.Width / 2, (float)-1.0*resourceBitmap.Height / 2, (float)1.2*resourceBitmap.Width / 2, (float)1.0*resourceBitmap.Height);
-                canvas.DrawCircle(0, 50, 400, circle);
-                canvas.DrawCircle(0, 50, 418, circle);
+                canvas.DrawCircle(0, 10, 400, circle);
+                canvas.DrawCircle(0, 10, 418, circle);
                 if (check == false)
                 {
                     if (degrees <= 90)
@@ -241,7 +241,7 @@ namespace HCIProject2_Part2
                         canvas.DrawLine((-x / 10), (-y / 10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
                         canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
                         canvas.Restore();
-                        degrees += (float)2;
+                        degrees += (float)3;
                     }
                     else
                     {
@@ -255,6 +255,9 @@ namespace HCIProject2_Part2
                         //canvas.DrawLine((-x / 10), (-y / 10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
                         //canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
                         canvas.Restore();
+
+                        
+
                     }
                     Accelerometer.Stop();
                 }
