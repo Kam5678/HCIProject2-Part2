@@ -26,7 +26,7 @@ namespace HCIProject2_Part2
         // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/bitmaps/displaying
         public static readonly SKPath HendecagramPath;
         const double cycleTime = 9000;      // in milliseconds
-
+        bool check = true;
         SKCanvasView canvasView;
         System.Diagnostics.Stopwatch stopwatch = new Stopwatch();
         System.Diagnostics.Stopwatch stopwatch2 = new Stopwatch();
@@ -61,9 +61,12 @@ namespace HCIProject2_Part2
             Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
             //angle = (float)(0 - (90 * acceleration.X));
             Accelerometer.Start(SensorSpeed.Fastest);
-           
 
-            
+            if(check == false)
+            {
+                SKBitmap a = Rotate();
+            }
+
 
             //InitializeComponent();
         }
@@ -136,7 +139,7 @@ namespace HCIProject2_Part2
 
             canvas.Clear();
             canvas.Translate(info.Width / 2, info.Height / 2);
-            float radius = (float)Math.Min(info.Width, info.Height) / 2 -10  ;
+            float radius = (float)Math.Min(info.Width, info.Height) / 2 -10;
 
             SkiaSharp.SKPaint thickLinePaint = new SkiaSharp.SKPaint
             {
@@ -200,7 +203,22 @@ namespace HCIProject2_Part2
             
         }
 
+        public static SKBitmap Rotate()
+        {
+            using (var bitmap = SKBitmap.Decode("HCIProject2-Part2.KeyholeOnly.png"))
+            {
+                var rotated = new SKBitmap(bitmap.Height, bitmap.Width);
 
+                using (var surface = new SKCanvas(rotated))
+                {
+                    surface.Translate(rotated.Width, 0);
+                    surface.RotateDegrees(90);
+                    surface.DrawBitmap(bitmap, 0, 0);
+                }
+
+                return rotated;
+            }
+        }
 
         /**
         public MainPage()
@@ -248,11 +266,12 @@ namespace HCIProject2_Part2
         {
             
 
-            if (stopwatch2.Elapsed.TotalSeconds >= 3 && angle == 90)
+            if (stopwatch2.Elapsed.TotalSeconds >= 4 && angle == 90)
             {
 
                 Console.WriteLine("Position Secure");
                 stopwatch2.Restart();
+                check = false;
             }
         }
 
@@ -286,6 +305,7 @@ namespace HCIProject2_Part2
                 stopwatch2.Start();
                 Todo(stopwatch2, angle);
             }
+            
             //Console.WriteLine(angle);
 
 
