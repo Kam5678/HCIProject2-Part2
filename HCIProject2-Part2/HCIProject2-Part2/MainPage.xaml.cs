@@ -13,6 +13,8 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Reflection;
 using System.IO;
+using System.Drawing;
+
 
 namespace HCIProject2_Part2
 {
@@ -247,14 +249,17 @@ namespace HCIProject2_Part2
                     canvas.Clear();
                     Accelerometer.Stop();
                     canvas.DrawBitmap(resourceBitmap2, rect);
-                  
+
+                    var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                    player.Load("HCIProject2-Part2.lock.mp3");
+                    player.Play();
                 }
             }
             
         }
 
-    
 
+   
         /**
         public MainPage()
         {
