@@ -183,7 +183,7 @@ namespace HCIProject2_Part2
             //canvas.Translate(x, y);
             if (resourceBitmap != null) {
                 //canvas.DrawCircle(x, y, 100, paint);
-                SKRect rect = new SKRect((float)-1.3*resourceBitmap.Width / 2, (float)-1.3*resourceBitmap.Height / 2, (float)1.3*resourceBitmap.Width / 2, (float)1.3*resourceBitmap.Height);
+                SKRect rect = new SKRect((float)-1.0*resourceBitmap.Width / 2, (float)-1.0*resourceBitmap.Height / 2, (float)1.0*resourceBitmap.Width / 2, (float)1.0*resourceBitmap.Height);
                 canvas.DrawBitmap(resourceBitmap, rect);
                 
                 // Draws Line from Middle to the Actual bar
@@ -210,7 +210,7 @@ namespace HCIProject2_Part2
                     SkiaSharp.SKPaint arcpaint = new SkiaSharp.SKPaint
                     {
                         Style = SkiaSharp.SKPaintStyle.Fill,
-                        Color = SkiaSharp.SKColor.FromHsl((float)i, 100, 50),
+                        Color = SkiaSharp.SKColor.FromHsl((float)(i/2), 100, 50),
                         StrokeWidth=30
                     };
 
