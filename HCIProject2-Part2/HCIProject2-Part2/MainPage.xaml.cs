@@ -250,9 +250,9 @@ namespace HCIProject2_Part2
                     Accelerometer.Stop();
                     canvas.DrawBitmap(resourceBitmap2, rect);
 
-                    var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
-                    player.Load("HCIProject2-Part2.lock.mp3");
-                    player.Play();
+                   // var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                   // player.Load("HCIProject2-Part2.lock.mp3");
+                   // player.Play();
                 }
             }
             
@@ -302,11 +302,11 @@ namespace HCIProject2_Part2
             //await ballEllipse.TranslateTo(e.Reading.Acceleration.X * -200, e.Reading.Acceleration.Y * 200, 200);
         }
        **/
-        public void Todo(Stopwatch stopwatch2, float angle)
+        public void Todo(Stopwatch stopwatch2)
         {
             
 
-            if (stopwatch2.Elapsed.TotalSeconds >= 3 && angle == 90)
+            if (stopwatch2.Elapsed.TotalSeconds >= 3)
             {
 
                 Console.WriteLine("Position Secure");
@@ -317,16 +317,17 @@ namespace HCIProject2_Part2
 
         async void Accelerometer_ReadingChanged(object sender, AccelerometerChangedEventArgs e)
         {
-            var data =  e.Reading;
+            var data = e.Reading;
             acceleration = (0.5f * e.Reading.Acceleration) + 0.95f * acceleration;
 
             float angleChoice = (float)(Math.Truncate(acceleration.X * 100) / 100);
-            
+
 
             if (previousangle - angleChoice > 0.1 ^ previousangle - angleChoice < -0.1)
             {
                 angle = (float)(0 - (90 * angleChoice));
                 previousangle = angleChoice;
+                //Console.WriteLine(angle);
             }
             if (acceleration.Z > 3)
             {
@@ -336,24 +337,25 @@ namespace HCIProject2_Part2
             {
                 angle = 90;
             }
-            else if(angle< -90)
+            else if (angle < -90)
             {
                 angle = -90;
             }
-            if (angle == 90)
+            Console.WriteLine(angle);
+            if (angle>=85 && angle<=95)
             {
                 stopwatch2.Start();
-                Todo(stopwatch2, angle);
+                Todo(stopwatch2);
+                Console.WriteLine("here");
             }
+            else
+            {
+                stopwatch2.Restart();
 
-            
-            //Console.WriteLine(angle);
+            }
+           
 
 
-            //Console.WriteLine(data.Acceleration.X);
-
-            //Console.WriteLine($"Reading: X: {data.Acceleration.X}, Y: {data.Acceleration.Y}, Z: {data.Acceleration.Z}");
-            //await ballEllipse.TranslateTo(e.Reading.Acceleration.X * -200, e.Reading.Acceleration.Y * 200, 200);
         }
 
 
