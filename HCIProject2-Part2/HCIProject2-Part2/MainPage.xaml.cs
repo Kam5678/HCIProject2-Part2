@@ -36,7 +36,7 @@ namespace HCIProject2_Part2
         Vector3 acceleration;
 
         private SKBitmap resourceBitmap;
-        
+        private SKBitmap resourceBitmap2;
 
         public MainPage()
         {
@@ -62,10 +62,7 @@ namespace HCIProject2_Part2
             //angle = (float)(0 - (90 * acceleration.X));
             Accelerometer.Start(SensorSpeed.Fastest);
 
-            if(check == false)
-            {
-                SKBitmap a = Rotate();
-            }
+            
 
 
             //InitializeComponent();
@@ -137,6 +134,13 @@ namespace HCIProject2_Part2
                 resourceBitmap = SKBitmap.Decode(stream);
             }
 
+            string resourceID2 = "HCIProject2-Part2.KeyholeOnlyturn.png";
+            Assembly assembly2 = GetType().GetTypeInfo().Assembly;
+            using (Stream stream = assembly.GetManifestResourceStream(resourceID2))
+            {
+                resourceBitmap2 = SKBitmap.Decode(stream);
+            }
+
             canvas.Clear();
             canvas.Translate(info.Width / 2, info.Height / 2);
             float radius = (float)Math.Min(info.Width, info.Height) / 2 -10;
@@ -186,13 +190,13 @@ namespace HCIProject2_Part2
             //canvas.Translate(x, y);
             if (resourceBitmap != null) {
                 //canvas.DrawCircle(x, y, 100, paint);
-                SKRect rect = new SKRect((float)-1.3*resourceBitmap.Width / 2, (float)-1.3*resourceBitmap.Height / 2, (float)1.3*resourceBitmap.Width / 2, (float)1.3*resourceBitmap.Height);
+                SKRect rect = new SKRect((float)-1.0*resourceBitmap.Width / 2, (float)-1.0*resourceBitmap.Height / 2, (float)1.0*resourceBitmap.Width / 2, (float)1.0*resourceBitmap.Height);
                 canvas.DrawBitmap(resourceBitmap, rect);
                 
                 // Draws Line from Middle to the Actual bar
                 canvas.DrawCircle(0, 50, 400, circle );
                 canvas.DrawCircle(0, 50, 418, circle);
-
+                
                 //canvas.DrawLine(x / 10, y / 10, (x / 10) - 15, (y / 10) - 15, lockPickPaint);
 
 
@@ -227,27 +231,18 @@ namespace HCIProject2_Part2
                 canvas.DrawLine(x / 2, y / 2, (float)1.1*x, (float)1.1*y, lockPickPaintHandle);
 
                 //Console.WriteLine(prevPointx);
-
+                if (check == false)
+                {
+                    canvas.Clear();
+                    Accelerometer.Stop();
+                    canvas.DrawBitmap(resourceBitmap2, rect);
+                  
+                }
             }
             
         }
 
-        public static SKBitmap Rotate()
-        {
-            using (var bitmap = SKBitmap.Decode("HCIProject2-Part2.KeyholeOnly.png"))
-            {
-                var rotated = new SKBitmap(bitmap.Height, bitmap.Width);
-
-                using (var surface = new SKCanvas(rotated))
-                {
-                    surface.Translate(rotated.Width, 0);
-                    surface.RotateDegrees(90);
-                    surface.DrawBitmap(bitmap, 0, 0);
-                }
-
-                return rotated;
-            }
-        }
+    
 
         /**
         public MainPage()
@@ -295,7 +290,7 @@ namespace HCIProject2_Part2
         {
             
 
-            if (stopwatch2.Elapsed.TotalSeconds >= 4 && angle == 90)
+            if (stopwatch2.Elapsed.TotalSeconds >= 3 && angle == 90)
             {
 
                 Console.WriteLine("Position Secure");
