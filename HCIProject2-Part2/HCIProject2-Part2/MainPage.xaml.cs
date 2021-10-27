@@ -37,6 +37,7 @@ namespace HCIProject2_Part2
         float previousangle = 0;
         Vector3 acceleration;
         float degrees = 0;
+        bool startOnce = false;
 
         private SKBitmap resourceBitmap;
         private SKBitmap resourceBitmap2;
@@ -223,7 +224,7 @@ namespace HCIProject2_Part2
                 canvas.DrawCircle(0, 10, 418, circle);
                 if (check == false)
                 {
-                    if (degrees <= 90)
+                    if (degrees < 90)
                     {
                         canvas.Save();
                         canvas.RotateDegrees(degrees);
@@ -236,6 +237,7 @@ namespace HCIProject2_Part2
                         canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
                         canvas.Restore();
                         degrees += (float)3;
+                        
                     }
                     else
                     {
@@ -249,11 +251,16 @@ namespace HCIProject2_Part2
                         //canvas.DrawLine((-x / 10), (-y / 10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
                         //canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
                         canvas.Restore();
+                        if (!startOnce)
+                        {
+                            Accelerometer.Start(SensorSpeed.Fastest);
+                            startOnce = true;
+                        }
 
+                       
                         
 
                     }
-                    Accelerometer.Stop();
                 }
                 else
                 {
@@ -285,6 +292,8 @@ namespace HCIProject2_Part2
                 Console.WriteLine("Position Secure");
                 stopwatch2.Restart();
                 check = false;
+                Accelerometer.Stop();
+
             }
         }
 
@@ -302,9 +311,18 @@ namespace HCIProject2_Part2
                 previousangle = angleChoice;
                 //Console.WriteLine(angle);
             }
-            if (acceleration.Z > 3)
+            if (acceleration.Z > 3 && check==false)
             {
                 Console.WriteLine("Thrust");
+                var assemblys = typeof(App).GetTypeInfo().Assembly;
+                Stream audioStream = assemblys.GetManifestResourceStream("HCIProject2-Part2.lock.mp3");
+
+
+                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                player.Load(audioStream);
+
+                player.Play();
+                Accelerometer.Stop();
             }
             if (angle > 90)
             {
