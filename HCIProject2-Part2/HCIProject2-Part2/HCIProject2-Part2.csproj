@@ -19,6 +19,8 @@
     <None Remove="lock.mp3" />
     <None Remove="lock.wav" />
     <None Remove="LockClick.mp3" />
+    <None Remove="LockInside.png" />
+    <None Remove="Pin.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +35,8 @@
     <EmbeddedResource Include="KeyholeR.png" />
     <EmbeddedResource Include="lock.wav" />
     <EmbeddedResource Include="LockClick.mp3" />
+    <EmbeddedResource Include="LockInside.png" />
+    <EmbeddedResource Include="Pin.png" />
   </ItemGroup>
 
   <ItemGroup>

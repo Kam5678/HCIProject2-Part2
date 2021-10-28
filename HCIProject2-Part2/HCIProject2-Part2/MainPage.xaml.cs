@@ -45,15 +45,22 @@ namespace HCIProject2_Part2
         float loginAngle = 90;
         float loginAngle1 = -90;
         bool check1 = true;
+        bool secondPinDone = false;
+        int animatePin = 0;
+        int translatePin1 = 0;
+        int translatePin2 = 0;
 
         private SKBitmap resourceBitmap;
         private SKBitmap resourceBitmap2;
-        
+        private SKBitmap resourceBitmap3;
+        private SKBitmap resourceBitmap4;
+        private SKBitmap resourceBitmap5;
 
-       
 
 
-      
+
+
+
 
         public MainPage()
         {
@@ -158,11 +165,27 @@ namespace HCIProject2_Part2
                 resourceBitmap = SKBitmap.Decode(stream);
             }
 
-            string resourceID2 = "HCIProject2-Part2.KeyholeOnlyturn.png";
-            Assembly assembly2 = GetType().GetTypeInfo().Assembly;
-            using (Stream stream = assembly.GetManifestResourceStream(resourceID2))
+            
+
+            string resourceID3 = "HCIProject2-Part2.LockInside.png";
+            Assembly assembly3 = GetType().GetTypeInfo().Assembly;
+            using (Stream stream = assembly3.GetManifestResourceStream(resourceID3))
             {
-                resourceBitmap2 = SKBitmap.Decode(stream);
+                resourceBitmap3 = SKBitmap.Decode(stream);
+            }
+
+            string resourceID4 = "HCIProject2-Part2.Pin.png";
+            Assembly assembly4 = GetType().GetTypeInfo().Assembly;
+            using (Stream stream = assembly3.GetManifestResourceStream(resourceID4))
+            {
+                resourceBitmap4 = SKBitmap.Decode(stream);
+            }
+
+            string resourceID5 = "HCIProject2-Part2.Pin.png";
+            Assembly assembly5 = GetType().GetTypeInfo().Assembly;
+            using (Stream stream = assembly3.GetManifestResourceStream(resourceID5))
+            {
+                resourceBitmap5 = SKBitmap.Decode(stream);
             }
 
             canvas.Clear();
@@ -218,6 +241,8 @@ namespace HCIProject2_Part2
             float prevPointx = radius * (float)Math.Sin(Math.PI * 90 / 180);
             float prevPointy = -radius * (float)Math.Cos(Math.PI * 90 / 180);
 
+            canvas.Translate(0, -250);
+
             for (double i = 90; i >= -90; i -= 0.1)
             {
                 SkiaSharp.SKPaint arcpaint = new SkiaSharp.SKPaint
@@ -235,15 +260,17 @@ namespace HCIProject2_Part2
             }
 
 
-
+            
             //canvas.Translate(x, y);
             if (resourceBitmap != null) {
                 //canvas.DrawCircle(x, y, 100, paint);
                 SKRect rect = new SKRect((float)-1.2*resourceBitmap.Width / 2, (float)-1.0*resourceBitmap.Height / 2, (float)1.2*resourceBitmap.Width / 2, (float)1.0*resourceBitmap.Height);
+                SKRect rect1 = new SKRect((float)-2.25*resourceBitmap3.Width / 2, (float)-1.75 * resourceBitmap3.Height / 2, (float)2.25 * resourceBitmap3.Width / 2, (float)1.75 * resourceBitmap3.Height);
+                SKRect rect2 = new SKRect((float)-0.65 * resourceBitmap4.Width / 2, (float)-0.65 * resourceBitmap4.Height / 2, (float)0.65 * resourceBitmap4.Width / 2, (float)0.65 * resourceBitmap4.Height);
                 canvas.DrawCircle(0, 10, 400, circle);
                 canvas.DrawCircle(0, 10, 418, circle);
                 
-                if (check == false && check1==false)
+                if (check == false && check1==false && secondPinDone)
                 {
                     
                     if (degrees < 90)
@@ -305,11 +332,86 @@ namespace HCIProject2_Part2
                     canvas.DrawLine(x / 10, y / 10, x / 2, y / 2, lockPickPaint);
                     canvas.DrawLine(x / 2, y / 2, (float)1.1 * x, (float)1.1 * y, lockPickPaintHandleBlack);
 
+                    //canvas.DrawLine((-x / 10), (-y / 10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
+                    //canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
+
                     canvas.DrawLine((-x / 10), (-y / 10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
-                    canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
+                    canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2.5)), (float)((-2.1 * y / 2.5) + 170), lockPickPaintHandleRed);
+
+                    //canvas.DrawLine((-x / 20), (-y / 0) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
+                    //canvas.DrawLine((-x / 5), (-y / 5) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
                     //canvas.DrawLine(x / 2, y / 2, (float)1.1 * x, (float)1.1 * y, lockPickPaintHandleBlack);
                 }
+                //animatePin += 1;
+                //canvas.DrawLine(0, 0, animatePin, animatePin, thickLinePaint);
+                canvas.Save();
+                canvas.Translate(0,820);
+                canvas.DrawBitmap(resourceBitmap3,rect1);
+                canvas.Restore();
+
                 
+
+               
+
+                if (check == false)
+                {
+                    if (translatePin1 < 100)
+                    {
+                        canvas.Save();
+                        canvas.Translate(-52, 795 - translatePin1);
+                        canvas.DrawBitmap(resourceBitmap4, rect2);
+                        canvas.Restore();
+                        translatePin1 += 20;
+
+                    }
+                    else
+                    {
+                        canvas.Save();
+                        canvas.Translate(-52, 795 - translatePin1);
+                        canvas.DrawBitmap(resourceBitmap4, rect2);
+                        canvas.Restore();
+                    }
+                }
+                else
+                {
+                    canvas.Save();
+                    canvas.Translate(-52, 795);
+                    canvas.DrawBitmap(resourceBitmap4, rect2);
+                    canvas.Restore();
+
+                }
+
+
+                if (check1 == false)
+                {
+                    if (translatePin2 < 100) {
+                        canvas.Save();
+                        canvas.Translate(52, 795 - translatePin2);
+                        canvas.DrawBitmap(resourceBitmap5, rect2);
+                        canvas.Restore();
+                        translatePin2 += 20;
+
+                    }
+                    else
+                    {
+                        
+                        canvas.Save();
+                        canvas.Translate(52, 795 - translatePin2);
+                        canvas.DrawBitmap(resourceBitmap5, rect2);
+                        canvas.Restore();
+                        secondPinDone = true;
+                    }
+                }
+                else
+                {
+                    canvas.Save();
+                    canvas.Translate(52, 795);
+                    canvas.DrawBitmap(resourceBitmap5, rect2);
+                    canvas.Restore();
+
+                }
+
+
             }
             
         }
@@ -322,6 +424,8 @@ namespace HCIProject2_Part2
 
             if (stopwatch2.Elapsed.TotalSeconds >= 3)
             {
+                check = false;
+                //Thread.Sleep(1000);
                 var assemblys = typeof(App).GetTypeInfo().Assembly;
                 Stream audioStream = assemblys.GetManifestResourceStream("HCIProject2-Part2.LockClick.mp3");
 
@@ -332,7 +436,7 @@ namespace HCIProject2_Part2
 
                 Console.WriteLine("Position Secure");
                 stopwatch2.Restart();
-                check = false;
+                
                 
 
             }
@@ -343,6 +447,8 @@ namespace HCIProject2_Part2
 
             if (stopwatch2.Elapsed.TotalSeconds >= 3)
             {
+                check1 = false;
+                //Thread.Sleep(1000);
                 var assemblys = typeof(App).GetTypeInfo().Assembly;
                 Stream audioStream = assemblys.GetManifestResourceStream("HCIProject2-Part2.LockClick.mp3");
 
@@ -350,10 +456,10 @@ namespace HCIProject2_Part2
                 var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
                 player.Load(audioStream);
                 player.Play();
+                //Thread.Sleep(500);
 
                 Console.WriteLine("Position Secure");
                 stopwatch2.Restart();
-                check1 = false;
                 Accelerometer.Stop();
                 
 
@@ -411,7 +517,7 @@ namespace HCIProject2_Part2
             {
                 stopwatch2.Start();
                 Todo2(stopwatch2);
-                Console.WriteLine("here");
+                Console.WriteLine("here1");
             }
             else
             {
