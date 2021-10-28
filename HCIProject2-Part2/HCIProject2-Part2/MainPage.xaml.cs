@@ -29,6 +29,8 @@ namespace HCIProject2_Part2
         // https://devblogs.microsoft.com/xamarin/adding-sound-xamarin-forms-app/
         // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/transforms/rotate
 
+
+        // Initalizing Variables 
         public static readonly SKPath HendecagramPath;
         const double cycleTime = 9000;      // in milliseconds
         bool check = true;
@@ -46,7 +48,6 @@ namespace HCIProject2_Part2
         float loginAngle1 = -90;
         bool check1 = true;
         bool secondPinDone = false;
-        int animatePin = 0;
         int translatePin1 = 0;
         int translatePin2 = 0;
 
@@ -127,26 +128,8 @@ namespace HCIProject2_Part2
             base.OnDisappearing();
             pageIsActive = false;
         }
-        static MainPage()
-        {
-            // Create 11-pointed star
-            HendecagramPath = new SKPath();
-            for (int i = 0; i < 11; i++)
-            {
-                double angle = 5 * i * 2 * Math.PI / 11;
-                SKPoint pt = new SKPoint(100 * (float)Math.Sin(angle),
-                                        -100 * (float)Math.Cos(angle));
-                if (i == 0)
-                {
-                    HendecagramPath.MoveTo(pt);
-                }
-                else
-                {
-                    HendecagramPath.LineTo(pt);
-                }
-            }
-            HendecagramPath.Close();
-        }
+        
+
         void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
         {
             SKImageInfo info = args.Info;
@@ -335,15 +318,14 @@ namespace HCIProject2_Part2
                     //canvas.DrawLine((-x / 10), (-y / 10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
                     //canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
 
-                    canvas.DrawLine((-x / 10), (-y / 10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
+                    canvas.DrawLine((-x/10), (-y/10) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
                     canvas.DrawLine((-x / 2), (-y / 2) + 170, (float)((-2.1 * x / 2.5)), (float)((-2.1 * y / 2.5) + 170), lockPickPaintHandleRed);
 
                     //canvas.DrawLine((-x / 20), (-y / 0) + 170, (-x / 2), (-y / 2) + 170, lockPickPaint);
                     //canvas.DrawLine((-x / 5), (-y / 5) + 170, (float)((-2.1 * x / 2)), (float)((-2.1 * y / 2) + 170), lockPickPaintHandleRed);
                     //canvas.DrawLine(x / 2, y / 2, (float)1.1 * x, (float)1.1 * y, lockPickPaintHandleBlack);
                 }
-                //animatePin += 1;
-                //canvas.DrawLine(0, 0, animatePin, animatePin, thickLinePaint);
+              
                 canvas.Save();
                 canvas.Translate(0,820);
                 canvas.DrawBitmap(resourceBitmap3,rect1);
@@ -422,7 +404,7 @@ namespace HCIProject2_Part2
         {
             
 
-            if (stopwatch2.Elapsed.TotalSeconds >= 3)
+            if (stopwatch2.Elapsed.TotalSeconds >= 2)
             {
                 check = false;
                 //Thread.Sleep(1000);
@@ -445,7 +427,7 @@ namespace HCIProject2_Part2
         {
 
 
-            if (stopwatch2.Elapsed.TotalSeconds >= 3)
+            if (stopwatch2.Elapsed.TotalSeconds >= 2)
             {
                 check1 = false;
                 //Thread.Sleep(1000);
@@ -493,6 +475,7 @@ namespace HCIProject2_Part2
                 Thread.Sleep(1000);
                 Accelerometer.Stop();
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
+                //Application.Current.MainPage.Navigation.PopAsync();
             }
             if (angle >= 90)
             {
